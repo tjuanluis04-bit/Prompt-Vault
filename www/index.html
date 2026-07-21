@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<title>PromptVault</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark">✦</span>
+        <div class="brand-text">
+          <h1>PromptVault</h1>
+          <p>tu fichero de prompts</p>
+        </div>
+      </div>
+      <button class="icon-btn" id="menuBtn" aria-label="Más opciones" aria-haspopup="true" aria-expanded="false">⋮</button>
+    </div>
+
+    <div class="search-row">
+      <input type="search" id="searchInput" placeholder="Buscar en tus prompts…" autocomplete="off">
+    </div>
+
+    <div class="filters">
+      <div class="type-toggle" role="tablist" aria-label="Filtrar por tipo">
+        <button class="type-chip active" data-type="todos" role="tab" aria-selected="true">Todos</button>
+        <button class="type-chip" data-type="imagen" role="tab" aria-selected="false">Imagen</button>
+        <button class="type-chip" data-type="texto" role="tab" aria-selected="false">Texto</button>
+      </div>
+      <div class="category-scroller" id="categoryScroller">
+        <button class="cat-chip active" data-cat="__all__">Todas las categorías</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="cardList" class="card-list"></main>
+
+  <div class="empty-state" id="emptyState" hidden>
+    <p class="empty-title">El fichero está vacío</p>
+    <p class="empty-sub">Toca el botón + para archivar tu primer prompt.</p>
+  </div>
+
+  <button class="fab" id="addBtn" aria-label="Añadir prompt">+</button>
+
+  <!-- Menú desplegable -->
+  <div class="dropdown" id="dropdownMenu" hidden>
+    <button id="exportBtn">Exportar copia (.json)</button>
+    <button id="importBtn">Importar copia (.json)</button>
+    <button id="manageCatsBtn">Gestionar categorías</button>
+  </div>
+  <input type="file" id="importFile" accept="application/json" hidden>
+
+  <!-- Formulario Añadir/Editar -->
+  <div class="sheet-overlay" id="formOverlay" hidden>
+    <form class="sheet" id="promptForm">
+      <div class="sheet-handle"></div>
+      <h2 id="formTitle">Nuevo prompt</h2>
+
+      <div class="field-group">
+        <label class="field-label">Tipo</label>
+        <div class="segmented" id="typeSegment">
+          <button type="button" class="seg-btn active" data-value="imagen">🖼 Imagen</button>
+          <button type="button" class="seg-btn" data-value="texto">✎ Texto</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="catSelect">Categoría</label>
+        <div class="cat-row">
+          <select id="catSelect"></select>
+          <button type="button" class="mini-btn" id="newCatBtn">+ Nueva</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="titleInput">Título (opcional)</label>
+        <input type="text" id="titleInput" placeholder="Ej: Retrato estilo acuarela" maxlength="80">
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="promptInput">Prompt</label>
+        <textarea id="promptInput" rows="5" placeholder="Escribe o pega aquí el prompt…" required></textarea>
+      </div>
+
+      <div class="field-group" id="imageField">
+        <label class="field-label">Imagen adjunta</label>
+        <div class="image-drop" id="imageDrop">
+          <img id="imagePreview" hidden alt="Vista previa">
+          <span id="imageDropText">Toca para adjuntar una imagen</span>
+        </div>
+        <input type="file" id="imageInput" accept="image/*" hidden>
+        <button type="button" class="mini-btn danger" id="removeImageBtn" hidden>Quitar imagen</button>
+      </div>
+
+      <div class="sheet-actions">
+        <button type="button" class="btn ghost" id="cancelFormBtn">Cancelar</button>
+        <button type="submit" class="btn primary" id="saveBtn">Guardar</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Vista ampliada de tarjeta -->
+  <div class="sheet-overlay" id="viewOverlay" hidden>
+    <div class="sheet view-sheet">
+      <div class="sheet-handle"></div>
+      <div id="viewContent"></div>
+      <div class="sheet-actions">
+        <button type="button" class="btn ghost" id="closeViewBtn">Cerrar</button>
+        <button type="button" class="btn primary" id="copyFromViewBtn">Copiar prompt</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

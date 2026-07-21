@@ -1,0 +1,9 @@
+{
+  "appId": "com.promptvault.app",
+  "appName": "PromptVault",
+  "webDir": "www",
+  "backgroundColor": "#F4EEDF",
+  "android": {
+    "backgroundColor": "#F4EEDF"
+  }
+}
