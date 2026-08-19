@@ -36,6 +36,15 @@ jobs:
       - name: Configurar Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Aplicar ícono personalizado
+        run: |
+          for d in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            mkdir -p "android/app/src/main/res/mipmap-$d"
+            cp "resources/icons/mipmap-$d/"*.png "android/app/src/main/res/mipmap-$d/"
+          done
+          mkdir -p android/app/src/main/res/mipmap-anydpi-v26
+          cp resources/icons/mipmap-anydpi-v26/*.xml android/app/src/main/res/mipmap-anydpi-v26/
+
       - name: Dar permisos a gradlew
         run: chmod +x android/gradlew
 
@@ -48,3 +57,9 @@ jobs:
         with:
           name: promptvault-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Subir ícono para Play Store
+        uses: actions/upload-artifact@v4
+        with:
+          name: playstore-icon
+          path: resources/icons/playstore-icon-512.png
